@@ -1,0 +1,59 @@
+from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton)
+
+
+
+
+# Start Button
+main_kb = [[KeyboardButton(text="Начать")]]
+main_kb_btn = ReplyKeyboardMarkup(keyboard=main_kb, resize_keyboard=True, input_field_placeholder="Выберите пункт ниже")
+
+# Account Button
+account_btn = [[KeyboardButton(text = "Украинский"), KeyboardButton(text = "Турецкий")]]
+switch_to_tur_acc = [[KeyboardButton(text = "Подписка"), KeyboardButton(text = "Игра")], [KeyboardButton(text="Купить сейчас")], [KeyboardButton(text="Отзывы")], [KeyboardButton(text="Наш чат")], [KeyboardButton(text="Сменить регион аккаунта на Турецкий")]]
+switch_to_ukr_acc = [[KeyboardButton(text = "Подписка"), KeyboardButton(text = "Игра")], [KeyboardButton(text="Купить сейчас")], [KeyboardButton(text="Отзывы")], [KeyboardButton(text="Наш чат")], [KeyboardButton(text="Сменить регион аккаунта на Украинский")]]
+acc_btn = ReplyKeyboardMarkup(keyboard=account_btn, resize_keyboard=True)
+switch_to_tur_acc_btn = ReplyKeyboardMarkup(keyboard=switch_to_tur_acc, resize_keyboard=True)
+switch_to_ukr_acc_btn = ReplyKeyboardMarkup(keyboard=switch_to_ukr_acc, resize_keyboard=True)
+
+
+
+
+
+# Subscription selector
+sub_select_for_tur_acc = [[KeyboardButton(text="Deluxe")], [KeyboardButton(text="Essential"), KeyboardButton(text="Extra")], [KeyboardButton(text="EA Play")], [KeyboardButton(text="Домой")]]
+sub_select_for_tur_acc_btn = ReplyKeyboardMarkup(keyboard=sub_select_for_tur_acc, resize_keyboard=True)
+
+
+sub_select_for_ukr_acc = [[KeyboardButton(text="Deluxe"), (KeyboardButton(text="Extra"))], [KeyboardButton(text="Домой")]]
+sub_select_for_ukr_acc_btn = ReplyKeyboardMarkup(keyboard=sub_select_for_ukr_acc, resize_keyboard=True)
+
+
+
+
+
+# Mounth choose
+mounth_selector_on_tur_acc = [[KeyboardButton(text="12 Месяцев"), KeyboardButton(text="3 Месяца")], [KeyboardButton(text="Назад")]]
+mounth_selector_on_tur_acc_btn = ReplyKeyboardMarkup(keyboard=mounth_selector_on_tur_acc, resize_keyboard=True)
+
+
+mounth_selector_on_ukr_acc = [[KeyboardButton(text="12 Месяцев")], [KeyboardButton(text="Назад")]]
+mounth_selector_on_ukr_acc_btn = ReplyKeyboardMarkup(keyboard=mounth_selector_on_ukr_acc, resize_keyboard=True)
+
+
+
+
+mounth_selector_EA = [[KeyboardButton(text="12 Месяцев"),  KeyboardButton(text="1 Месяц")], [KeyboardButton(text="Назад")]]
+mounth_selector_EA_btn = ReplyKeyboardMarkup(keyboard=mounth_selector_EA, resize_keyboard=True)
+
+add_to_bad = [[KeyboardButton(text="Добавить в корзину")]]
+add_to_bad_btn = ReplyKeyboardMarkup(keyboard=add_to_bad, resize_keyboard=True)
+
+
+
+bag = [[KeyboardButton(text="Добавить в корзину"), KeyboardButton(text="Удалить из корзины")], [KeyboardButton(text="Назад")]]
+bag_btn = ReplyKeyboardMarkup(keyboard=bag, resize_keyboard=True)
+
+
+
+back_back = [[KeyboardButton(text="Домой")]]
+back_back_btn = ReplyKeyboardMarkup(keyboard=back_back, resize_keyboard=True)
