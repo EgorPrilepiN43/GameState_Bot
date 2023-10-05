@@ -1,0 +1,466 @@
+
+import asyncio
+import keyboards as kb
+from aiogram import Bot, Dispatcher, F, Router
+from aiogram.types import Message
+
+bot = Bot("TOKEN")
+dp = Dispatcher()
+router = Router()
+
+
+# For ADMIN
+# SUBS ON UKRANIAN ACCOUNT
+
+subs_dict = {
+    "subscription_on_ukr_acc_DELUX_on_12_mounths": 7990,
+    "subscription_on_ukr_acc_DELUX_on_3_mounths": 4390,
+    "subscription_on_ukr_acc_EXTRA_on_12_mounths": 6990,
+    "subscription_on_ukr_acc_EXTRA_on_3_mounths": 3890,
+    "subscription_on_ukr_acc_ESSENTIAL_on_12_mounths": 6590,
+    "subscription_on_ukr_acc_ESSENTIAL_on_3_mounths": 2390,
+    "EA_play_on_ukr_acc_on_12_mounths": 2900,
+
+    "grivna": 3.2,
+
+    "subscription_on_tur_acc_DELUX_on_12_mounths": 12890,
+    "subscription_on_tur_acc_DELUX_on_3_mounths": 4390,
+    "subscription_on_tur_acc_EXTRA_on_12_mounths": 10990,
+    "subscription_on_tur_acc_EXTRA_on_3_mounths": 3890,
+    "subscription_on_tur_acc_ESSENTIAL_on_12_mounths": 6590,
+    "subscription_on_tur_acc_ESSENTIAL_on_3_mounths": 2390,
+    "EA_play_on_tur_acc_on_12_mounths": 1590,
+
+    "lira_0__899": 5.5,
+    "lira_900__1399": 5,
+    "lira_1400__more": 4.7
+}
+
+
+# subscription_on_ukr_acc_DELUX_on_12_mounths = 7990
+# subscription_on_ukr_acc_DELUX_on_3_mounths = 4390
+# subscription_on_ukr_acc_DELUX_on_1_mounth = 1700
+#
+# subscription_on_ukr_acc_EXTRA_on_12_mounths = 6990
+# subscription_on_ukr_acc_EXTRA_on_3_mounths = 3890
+# subscription_on_ukr_acc_EXTRA_on_1_mounth = 1600
+#
+# subscription_on_ukr_acc_ESSENTIAL_on_12_mounths = 6590
+# subscription_on_ukr_acc_ESSENTIAL_on_3_mounths = 2390
+# subscription_on_ukr_acc_ESSENTIAL_on_1_mounth = 1200
+#
+# EA_play_on_ukr_acc_on_1_mounth = 800
+# EA_play_on_ukr_acc_on_12_mounths = 2900
+#
+# grivna_under_1000 = 3.6
+# grivna_higher_1000 = 3.2
+#
+#
+#
+#
+# # SUBS ON TURKISH ACCOUNT
+# subscription_on_tur_acc_DELUX_on_12_mounths = 12890
+# subscription_on_tur_acc_DELUX_on_3_mounths = 4390
+# subscription_on_tur_acc_DELUX_on_1_mounth = 1650
+#
+# subscription_on_tur_acc_EXTRA_on_12_mounths = 10990
+# subscription_on_tur_acc_EXTRA_on_3_mounths = 3890
+# subscription_on_tur_acc_EXTRA_on_1_mounth = 1450
+#
+# subscription_on_tur_acc_ESSENTIAL_on_12_mounths = 6590
+# subscription_on_tur_acc_ESSENTIAL_on_3_mounths = 2390
+# subscription_on_tur_acc_ESSENTIAL_on_1_mounth = 970
+#
+# EA_play_on_tur_acc_on_1_mounth = 600
+# EA_play_on_tur_acc_on_12_mounths = 1590
+#
+# lira_0__899 = 5.5
+# lira_900__1399 = 5
+# lira_1400__more = 4.7
+
+
+
+
+# -------------------------------------------------------------------------------------
+
+acc_selector = [2.7, 3.3]
+valuta = float(1.0)
+
+sub_variants = ["Extra", "Essential", "Deluxe", "EA Play"]
+subs = sub_variants[0]
+
+country_select = ["Украинский", "Турецкий"]
+country = "Русский"
+bag_str = ""
+Selected_Game = ""
+
+# -------------------------------------------------------------------------------------
+
+# Start Program
+
+
+
+admin = False
+admin_id = 1875708580
+egor_id = 992002100
+permanent_change = subs_dict["subscription_on_ukr_acc_DELUX_on_12_mounths"]
+
+
+
+@dp.message(F.text == "admin")
+async def admin(message: Message):
+    global admin, admin_id, egor_id
+    if message.chat.id == admin_id or message.chat.id == egor_id:
+        admin = True
+        await message.answer(f"Приветствую admin\n\nВведите что нужно исправить?")
+
+@dp.message(F.text[:5] == "admin")
+async def admin_change(message: Message):
+    global subs_dic, permanent_change
+    if admin == True:
+        changes = message.text[6:]
+        permanent_change = changes
+        await message.answer(f"{changes}, Введите новую цену:")
+    else:
+        await message.answer(f"Вы не админ!")
+
+
+
+
+
+@dp.message(F.text == "/start")
+async def cmd_start(message: Message):
+    await message.answer(f"Приветствую {message.chat.first_name}", reply_markup=kb.main_kb_btn)
+    await message.answer_sticker("CAACAgIAAxkBAAEEuSVif7lG5qHSnR3-OxoDp7_ExQnH9AAChwIAAladvQpC7XQrQFfQkCQE")
+    # if client_bag != "":
+    #     client_bag = ""
+    # await message.answer(f"Корщина была отчищена", reply_markup=kb.main_kb)
+
+
+@dp.message(F.text == "/help")
+async def cmd_help(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEEXqhiSxYKOT32r_p8GIlLxTkee_QCQgACJyAAAulVBRjTVPZqymtoFyME")
+    await message.answer(f"/start - для запуска/перезапуска бота при некорректной работе. \n\n"
+                         f"Используйте уже существующие кнопки для навигации в боте.\n\n"
+                         f"Цены пишите в той валюте, в которой вам указал бот, без посторонних символов, только цифра.")
+
+
+@dp.message(F.text == "/me")
+async def cmd_my_ID(message: Message):
+    await message.answer(f"I know everything about you! \n {message}")
+    await message.answer_sticker("CAACAgIAAxkBAAEEtERie5XFlpacdaZWN_PfiNp032yn2QACOwMAArVx2gYYSwbSVVPLRCQE")
+
+
+
+@dp.message(F.text == "Отзывы")
+async def onzivi(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEKb5hlGrqSJtD270zPyRHIIN_0h9Hd-AACbQMAAs9fiwdiTlE4t9rYlDAE")
+    await message.answer(f"Спасибо, что вы выбрали нас! \nМы работаем уже 3 года! Вот наш канал с отзывами.\nhttps://t.me/gamestatereviews", )
+
+
+
+@dp.message(F.text == "Наш чат")
+async def chat(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEKb5hlGrqSJtD270zPyRHIIN_0h9Hd-AACbQMAAs9fiwdiTlE4t9rYlDAE")
+    await message.answer(f"Добро пожаловать в наш дружный чат канала!\nhttps://t.me/gamestatechat", )
+
+# -------------------------------------------------------------------------------------
+
+# Choose account
+@dp.message(F.text == "Начать")
+async def account(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEKajVlFt5qniSJKWgMsj-vGm4_PYPZcwACbAgAAgi3GQKpU2aQ63gO5jAE")
+    await message.answer("Спасибо, что выбрали нас!")
+    await message.answer("Выбери свой акк", reply_markup=kb.acc_btn)
+
+
+@dp.message(F.text == "Украинский")
+async def account_ukr(message: Message):
+    global valuta, country_select, country
+    country = country_select[0]
+    valuta = acc_selector[0]
+    # await message.answer_sticker("CAACAgIAAxkBAAEKajtlFt_QrXpv4YfPuEmMhKR3CxRg6QACBAEAAladvQreBNF6Zmb3bDAE")
+    await message.answer("Цены будут рассчитываться для Украинского аккаунта. \n", reply_markup=kb.switch_to_tur_acc_btn)
+
+@dp.message(F.text == "Турецкий")
+async def account_tur(message: Message):
+    global valuta, country_select, country
+    country = country_select[1]
+    valuta = acc_selector[1]
+    # await message.answer_sticker("CAACAgIAAxkBAAEKaj1lFt_sJzA5DW5bBXSrQeto1P9LWwACuQkAAnlc4gm4MR3omfgizzAE")
+    await message.answer("Цены будут рассчитываться для Турецкого аккаунта. \n", reply_markup=kb.switch_to_ukr_acc_btn)
+
+# -------------------------------------------------------------------------------------
+
+@dp.message(F.text == "Сменить регион аккаунта на Украинский")
+async def account_to_tur(message: Message):
+    global valuta, country_select, country
+    country = country_select[0]
+    valuta = acc_selector[0]
+    await message.answer("Цены будут рассчитываться для Украинского аккаунта. \n", reply_markup=kb.switch_to_tur_acc_btn)
+
+@dp.message(F.text == "Сменить регион аккаунта на Турецкий")
+async def account_to_ukr(message: Message):
+    global valuta, country_select, country
+    country = country_select[1]
+    valuta = acc_selector[1]
+    await message.answer("Цены будут рассчитываться для Турецкого аккаунта. \n", reply_markup=kb.switch_to_ukr_acc_btn)
+
+# -------------------------------------------------------------------------------------
+
+
+
+
+@dp.message(F.text == "Игра")
+async def game(message: Message):
+    if valuta == acc_selector[0]:
+        await message.reply(f"Введите название игры и ее цену в гривнах в таком формате:\n\nИгра Spider man 2 \n\n И в следующем сообщении введите цену:")
+    if valuta == acc_selector[1]:
+        await message.reply(f"Введите название игры и ее цену в лирах в таком формате:\n\nИгра Spider man 2 \n\n И в следующем сообщении введите цену:")
+
+
+@dp.message(F.text[:4] == "Игра")
+async def game(message: Message):
+    global Selected_Game
+    Selected_Game = message.text[5:]
+
+    await message.reply(f"{Selected_Game} \n\nЕсли все верно, то введите цену игры в выбраной валюте или добавьте игру в корзину", reply_markup=kb.back_back_btn)
+
+
+
+
+# -------------------------------------------------------------------------------------
+
+@dp.message(F.text == "Подписка")
+async def money(message: Message):
+    if valuta == acc_selector[0]:
+        await message.reply(f"Выберите вариант подписки:", reply_markup=kb.sub_select_for_ukr_acc_btn)
+    if valuta == acc_selector[1]:
+        await message.reply(f"Выберите вариант подписки:", reply_markup=kb.sub_select_for_tur_acc_btn)
+
+
+@dp.message(F.text == "Deluxe")
+async def Deluxe(message: Message):
+    global sub_variants, subs
+    if valuta == acc_selector[0]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKaj9lFuCNehudL5im6N4GsXXGTiKebwACfgQAAsxUSQmxTXJX9LxBBDAE")
+        await message.reply(f"На сколько месяцев вам нужна подписка Deluxe?", reply_markup=kb.mounth_selector_on_ukr_acc_btn)
+        subs = sub_variants[2]
+    if valuta == acc_selector[1]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKaj9lFuCNehudL5im6N4GsXXGTiKebwACfgQAAsxUSQmxTXJX9LxBBDAE")
+        await message.reply(f"На сколько месяцев вам нужна подписка Deluxe?", reply_markup=kb.mounth_selector_on_tur_acc_btn)
+        subs = sub_variants[2]
+
+
+@dp.message(F.text == "Essential")
+async def Essential(message: Message):
+    if valuta == acc_selector[0]:
+        await message.reply(f"Мы не продаем подписка Essential на украинский аккаунт.")
+    else:
+        await message.answer_sticker("CAACAgIAAxkBAAEKakdlFuOkJPyda_LLTC645UwfWLj1UwAC8wADVp29Cmob68TH-pb-MAQ")
+        await message.reply(f"На сколько месяцев вам нужна подписка Essential?", reply_markup=kb.mounth_selector_on_tur_acc_btn)
+        global sub_variants, subs
+        subs = sub_variants[0]
+
+
+@dp.message(F.text == "Extra")
+async def Extra(message: Message):
+    global sub_variants, subs
+    if valuta == acc_selector[0]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKak9lFuS1HseVdUQgrU8XEWcygYNMPgACOgMAArVx2gbuiM2IJ5isDDAE")
+        await message.reply(f"На сколько месяцев вам нужна подписка Extra?", reply_markup=kb.mounth_selector_on_ukr_acc_btn)
+        subs = sub_variants[1]
+    if valuta == acc_selector[0]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKak9lFuS1HseVdUQgrU8XEWcygYNMPgACOgMAArVx2gbuiM2IJ5isDDAE")
+        await message.reply(f"На сколько месяцев вам нужна подписка Extra?", reply_markup=kb.mounth_selector_on_tur_acc_btn)
+        subs = sub_variants[1]
+
+
+@dp.message(F.text == "EA Play")
+async def EA(message: Message):
+    # await message.answer_sticker("CAACAgIAAxkBAAEKak9lFuS1HseVdUQgrU8XEWcygYNMPgACOgMAArVx2gbuiM2IJ5isDDAE")
+    # await message.reply(f"На сколько месяцев вам нужна подписка EA Play?", reply_markup=kb.mounth_selector_EA_btn)
+    await message.reply( f"Подписка EA Play в Турецком сторе на 12 Месяцев стоит {subs_dict['EA_play_on_tur_acc_on_12_mounths']} рублей", reply_markup=kb.acc_btn)
+    global sub_variants, subs
+    subs = sub_variants[3]
+
+
+
+
+
+
+@dp.message(F.text == "12 Месяцев")
+async def mounths_subs_12(message: Message):
+    if valuta == acc_selector[0]:
+        if subs == sub_variants[2]:
+            await message.reply(f"Подписка Deluxe в Украинском сторе на 12 Месяцев стоит {subs_dict['subscription_on_ukr_acc_DELUX_on_12_mounths']} рублей", reply_markup=kb.acc_btn)
+        elif subs == sub_variants[1]:
+            await message.reply(f"Подписка Extra в Украинском сторе на 12 Месяцев стоит {subs_dict['subscription_on_ukr_acc_EXTRA_on_12_mounths} рублей']}", reply_markup=kb.acc_btn)
+        elif subs == sub_variants[0]:
+            await message.reply(f"Подписка Essential в Украинском сторе на 12 Месяцев стоит {subs_dict['subscription_on_ukr_acc_ESSENTIAL_on_12_mounths} рублей']}", reply_markup=kb.acc_btn)
+            # await message.reply(f"Подписка Essential в Украинском сторе на 12 Месяцев стоит {subscription_on_ukr_acc_ESSENTIAL_on_12_mounths} рублей", reply_markup=kb.acc_btn)
+        elif subs == sub_variants[3]:
+            await message.reply(f"Подписка EA Play в Украинском сторе на 12 Месяцев стоит {subs_dict['EA_play_on_ukr_acc_on_12_mounths']} рублей", reply_markup=kb.acc_btn)
+
+    if valuta == acc_selector[1]:
+        if subs == sub_variants[2]:
+            await message.reply(f"Подписка Deluxe в Турецком сторе на 12 Месяцев стоит {subs_dict['subscription_on_tur_acc_DELUX_on_12_mounths']} рублей",
+                                reply_markup=kb.acc_btn)
+        elif subs == sub_variants[1]:
+            await message.reply(f"Подписка Extra в Турецком сторе на 12 Месяцев стоит {subs_dict['subscription_on_tur_acc_EXTRA_on_12_mounths']} рублей",
+                                reply_markup=kb.acc_btn)
+        elif subs == sub_variants[0]:
+            await message.reply(f"Подписка Essential в Турецком сторе на 12 Месяцев стоит {subs_dict['subscription_on_tur_acc_ESSENTIAL_on_12_mounths']} рублей",
+                                reply_markup=kb.acc_btn)
+        elif subs == sub_variants[3]:
+            await message.reply(f"Подписка EA Play в Турецком сторе на 12 Месяцев стоит {subs_dict['EA_play_on_tur_acc_on_12_mounths']} рублей", reply_markup=kb.acc_btn)
+
+
+
+
+@dp.message(F.text == "3 Месяца")
+async def mounths_subs_3(message: Message):
+    if valuta == acc_selector[0]:
+        if subs == sub_variants[2]:
+            await message.reply(f"Подписка Deluxe в Украинском сторе на 3 Месяцав стоит {subs_dict['subscription_on_ukr_acc_DELUX_on_3_mounths']} рублей", reply_markup=kb.acc_btn)
+        elif subs == sub_variants[1]:
+            await message.reply(f"Подписка Extra в Украинском сторе на 3 Месяца стоит {subs_dict['subscription_on_ukr_acc_EXTRA_on_3_mounths']} рублей", reply_markup=kb.acc_btn)
+        elif subs == sub_variants[0]:
+            await message.reply(f"Подписка Essential в Украинском сторе на 3 Месяца стоит {subs_dict['subscription_on_ukr_acc_ESSENTIAL_on_3_mounths']} рублей", reply_markup=kb.acc_btn)
+    if valuta == acc_selector[1]:
+        if subs == sub_variants[2]:
+            await message.reply(f"Подписка Deluxe в Турецком сторе на 3 Месяца стоит {subs_dict['subscription_on_tur_acc_DELUX_on_3_mounths']} рублей",
+                                reply_markup=kb.acc_btn)
+        elif subs == sub_variants[1]:
+            await message.reply(f"Подписка Extra в Турецком сторе на 3 Месяца стоит {subs_dict['subscription_on_tur_acc_EXTRA_on_3_mounths']} рублей",
+                                reply_markup=kb.acc_btn)
+        elif subs == sub_variants[0]:
+            await message.reply(f"Подписка Essential в Турецком сторе на 3 Месяца стоит {subs_dict['subscription_on_tur_acc_ESSENTIAL_on_3_mounths']} рублей",
+                                reply_markup=kb.acc_btn)
+
+
+# @dp.message(F.text == "1 Месяц")
+# async def mounths_subs_1(message: Message):
+#     if valuta == acc_selector[0]:
+#         if subs == sub_variants[2]:
+#             await message.reply(f"Подписка Deluxe в Украинском сторе на 1 Месяц стоит {subscription_on_ukr_acc_DELUX_on_1_mounth} рублей", reply_markup=kb.acc_btn)
+#         elif subs == sub_variants[1]:
+#             await message.reply(f"Подписка Extra в Украинском сторе на 1 Месяц стоит {subscription_on_ukr_acc_EXTRA_on_1_mounth} рублей", reply_markup=kb.acc_btn)
+#         elif subs == sub_variants[0]:
+#             await message.reply(f"Подписка Essential в Украинском сторе на 1 Месяц стоит {subscription_on_ukr_acc_ESSENTIAL_on_1_mounth} рублей", reply_markup=kb.acc_btn)
+#         elif subs == sub_variants[3]:
+#             await message.reply(f"Подписка EA Play в Турецком сторе на 12 Месяцев стоит {EA_play_on_ukr_acc_on_1_mounth} рублей", reply_markup=kb.acc_btn)
+#
+#     if valuta == acc_selector[1]:
+#         if subs == sub_variants[2]:
+#             await message.reply(f"Подписка Deluxe в Турецком сторе на 1 Месяц стоит {subscription_on_tur_acc_DELUX_on_1_mounth} рублей",
+#                                 reply_markup=kb.acc_btn)
+#         elif subs == sub_variants[1]:
+#             await message.reply(f"Подписка Extra в Турецком сторе на 1 Месяц стоит {subscription_on_tur_acc_EXTRA_on_1_mounth} рублей",
+#                                 reply_markup=kb.acc_btn)
+#         elif subs == sub_variants[0]:
+#             await message.reply(f"Подписка Essential в Турецком сторе на 1 Месяц стоит {subscription_on_tur_acc_ESSENTIAL_on_1_mounth} рублей",
+#                                 reply_markup=kb.acc_btn)
+#         elif subs == sub_variants[3]:
+#             await message.reply(f"Подписка EA Play в Турецком сторе на 12 Месяцев стоит {EA_play_on_tur_acc_on_1_mounth} рублей", reply_markup=kb.acc_btn)
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------------------------------
+
+@dp.message(F.text == "Домой")
+async def home(message: Message):
+    if valuta == acc_selector[0]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKakVlFuMdeL_vGJgfHqQmE0E9k6Q-qwACSQIAAladvQoqlwydCFMhDjAE", reply_markup=kb.switch_to_tur_acc_btn)
+    elif valuta == acc_selector[1]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKakVlFuMdeL_vGJgfHqQmE0E9k6Q-qwACSQIAAladvQoqlwydCFMhDjAE", reply_markup=kb.switch_to_ukr_acc_btn)
+
+
+@dp.message(F.text == "Назад")
+async def back(message: Message):
+    if valuta == acc_selector[0]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKakVlFuMdeL_vGJgfHqQmE0E9k6Q-qwACSQIAAladvQoqlwydCFMhDjAE",
+                                     reply_markup=kb.sub_select_for_ukr_acc_btn)
+    elif valuta == acc_selector[1]:
+        await message.answer_sticker("CAACAgIAAxkBAAEKakVlFuMdeL_vGJgfHqQmE0E9k6Q-qwACSQIAAladvQoqlwydCFMhDjAE",
+                                     reply_markup=kb.sub_select_for_tur_acc_btn)
+
+
+@dp.message(F.text == "Купить сейчас")
+async def buy(message: Message):
+    await message.answer("Напишите мне и я помогу вам с покупкой \n\n@ingamestate")
+    await message.answer("Не забудьте оставить отзыв, будем вам благодарны за доверие!")
+
+
+
+
+
+
+# -------------------------------------------------------------------------------------
+
+@dp.message(F.text == "Sony")
+async def Sony(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEKajllFt9cybiin58K0WPyxbVGmYEgWwACXA4AAox70UjJobuAVkcoTzAE")
+
+@dp.message(F.text == "Создатель")
+async def Egor(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEKakNlFuIfKCK3GBzj1b9-lqpCcywYgwACcAMAAs9fiwfBgbTnPr0n8zAE")
+    await message.reply("Привет, я Егор - @QLEgoR, создатель этого бота, если тебе нужен бот, пиши мне в любое время! И поздравляю с нахождением пасхалка")
+
+
+
+
+
+
+
+
+
+
+@dp.message(F.text.cast(int))
+async def money(message: Message):
+    global permanent_change, subs_dict, admin
+    if admin == True:
+        subs_dict[permanent_change] = message.text
+        await message.answer(f"Цена изменилась!")
+        admin = False
+    else:
+        if valuta == acc_selector[0]:
+            grn_price = int(message.text)
+            if grn_price > 0:
+                rub_price = grn_price * subs_dict["grivna"]
+
+        if valuta == acc_selector[1]:
+            lira_price = int(message.text)
+            if lira_price <= 899:
+                rub_price = lira_price * subs_dict["lira_0__899"]
+            elif (lira_price <= 1399) and (lira_price > 899):
+                rub_price = lira_price * subs_dict["lira_900__1399"]
+            else:
+                rub_price = lira_price * subs_dict["lira_1400__more"]
+        await message.reply(f"Нужная вам  игра {Selected_Game} стоит {int(rub_price) + 1} рублей", reply_markup=kb.acc_btn)
+        await message.answer(f"Скопируйте сообщение и отправьте администратору для дальнейшей покупки")
+
+
+@dp.message()
+async def answer(message: Message):
+    await message.answer_sticker("CAACAgIAAxkBAAEKajNlFt2iPC-1HGv4WcNBHS21PToEdwACAgEAAladvQpO4myBy0Dk_zAE")
+    await message.reply("Я не понял ваше сообщение!")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
